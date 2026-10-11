@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Đăng ký Combo Khóa học Lên men thực phẩm - Kiku Bara Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --primary: #1f514b; --accent: #e3a94c; --bg: #faedd0; --white: #ffffff; --text-gray: #555555; }
+  body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--primary); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px 15px; }
+  .container { background: var(--white); padding: 35px 25px; border-radius: 16px; box-shadow: 0 12px 30px rgba(31, 81, 75, 0.15); max-width: 500px; width: 100%; box-sizing: border-box; }
+  .header { text-align: center; margin-bottom: 25px; }
+  .title { font-size: 20px; font-weight: 700; margin: 10px 0; line-height: 1.4; }
+  .form-group { margin-bottom: 18px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  input[type="text"], input[type="tel"], input[type="email"] { width: 100%; padding: 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; box-sizing: border-box; transition: 0.3s; }
+  input:focus { border-color: var(--primary); outline: none; }
+  
+  .course-list { background: #f8f9fa; border: 1.5px solid #e0e0e0; border-radius: 8px; padding: 12px; max-height: 280px; overflow-y: auto; }
+  .course-item { display: flex; align-items: flex-start; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #ccc; cursor: pointer; }
+  .course-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .course-item input { margin-top: 4px; margin-right: 12px; transform: scale(1.3); cursor: pointer; }
+  .course-info { flex: 1; font-size: 14px; line-height: 1.5; }
+  .course-price { font-weight: bold; color: var(--accent); font-size: 13px; }
+
+  button { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 16px; font-size: 15px; font-weight: 700; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+  button:disabled { background-color: #a0b2b0; cursor: not-allowed; }
+  
+  #qrSection { display: none; text-align: center; }
+  .qr-box { border: 2px dashed var(--accent); padding: 20px; border-radius: 12px; margin: 20px 0; background: #fafafa; }
+  .qr-box img { max-width: 85%; border-radius: 8px; display: block; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+  .amount { font-size: 26px; font-weight: 700; color: var(--accent); margin: 15px 0 5px; }
+  .transfer-content { background: var(--bg); padding: 10px 20px; border-radius: 8px; font-weight: 700; font-size: 20px; border: 1px solid var(--accent); display: inline-block; user-select: all; letter-spacing: 1px;}
+  .error-msg { color: #d32f2f; font-size: 13px; font-weight: 600; margin-top: 6px; display: none; background: #ffebee; padding: 8px; border-radius: 6px;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div id="formSection">
+    <div class="header">
+      <h1 class="title">ĐĂNG KÝ KHÓA HỌC CHUYÊN SÂU</h1>
+      <p style="font-size: 13px; color: var(--text-gray); margin: 0;">Điền thông tin để hệ thống tạo mã thanh toán tự động</p>
+    </div>
+    <form id="regForm" onsubmit="submitForm(event)">
+      <div class="form-group"><label>Họ và tên *</label><input type="text" id="name" required placeholder="Ví dụ: Nguyễn Văn A"></div>
+      <div class="form-group"><label>Số điện thoại (Có Zalo) *</label><input type="tel" id="phone" required placeholder="Ví dụ: 0912345678"></div>
+      <div class="form-group"><label>Email (Nhận quyền học) *</label><input type="email" id="email" required placeholder="Ví dụ: email@gmail.com"></div>
+      
+      <div class="form-group">
+        <label>Chọn khóa học (Mua từ 2 khóa tự động giảm 30%) *</label>
+        <div class="course-list">
+          <label class="course-item"><input type="checkbox" name="course" value="CHUOI"><div class="course-info">Dịch chuối lên men (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
+          <label class="course-item"><input type="checkbox" name="course" value="BVTV"><div class="course-info">Thuốc BVTV sinh học (4 buổi)<br><span class="course-price">700.000 đ</span></div></label>
+          <label class="course-item"><input type="checkbox" name="course" value="CA"><div class="course-info">Đạm cá (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
+          <label class="course-item"><input type="checkbox" name="course" value="PC"><div class="course-info">Nâng cấp phân chuồng (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
+          <label class="course-item"><input type="checkbox" name="course" value="2R"><div class="course-info">Tái chế rơm rạ (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Mã giảm giá (Nếu có)</label>
+        <input type="text" id="promo" placeholder="Ví dụ: V30">
+        <div id="promoError" class="error-msg">Mã không chính xác! Gợi ý: Chọn từ 2 khóa học trở lên để hệ thống tự động giảm 30%.</div>
+      </div>
+      <button type="submit" id="submitBtn">ĐĂNG KÝ & THANH TOÁN</button>
+    </form>
+  </div>
+  
+  <div id="qrSection">
+    <div class="header"><h2 class="title" style="color: var(--primary);">THÔNG TIN ĐÃ GHI NHẬN!</h2></div>
+    <div class="qr-box">
+      <img id="qrImage" src="" alt="Mã VietQR">
+      <div style="font-size: 12px; margin-top:10px; color:#b97700; font-weight:bold;">(Lưu ảnh mã QR hoặc dùng máy tính quét)</div>
+      <div class="amount" id="qrAmount">0 đ</div>
+      <p style="font-size: 13px; color: var(--text-gray); margin-bottom:5px;">Nội dung chuyển khoản chính xác:</p>
+      <div class="transfer-content" id="qrContent">...</div>
+    </div>
+    <p style="font-size: 13px; line-height:1.5;">Hệ thống đối soát tự động, vui lòng <b>KHÔNG</b> thay đổi nội dung chuyển khoản.<br>Sau khi thanh toán, Email tự động sẽ được gửi cho bạn.</p>
+  </div>
+</div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const CURRENT_PARTNER = urlParams.get('ref') || "";
+
+  function submitForm(event) {
+    event.preventDefault();
+    
+    let selectedCourses = [];
+    document.querySelectorAll('input[name="course"]:checked').forEach(cb => selectedCourses.push(cb.value));
+
+    if (selectedCourses.length === 0) {
+      alert("Vui lòng chọn ít nhất 1 khóa học!"); return;
+    }
+
+    const promoInput = document.getElementById('promo').value.trim().toUpperCase();
+    
+    // Validate Frontend: Ép nhập đúng mã V30 hoặc để trống. Sai mã bắt xóa đi.
+    if (promoInput !== "" && promoInput !== "V30") {
+      document.getElementById('promoError').style.display = 'block';
+      document.getElementById('promo').value = ''; 
+      return; 
+    } else {
+      document.getElementById('promoError').style.display = 'none';
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.innerText = "ĐANG KẾT NỐI HỆ THỐNG..."; btn.disabled = true;
+
+    const payload = {
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      email: document.getElementById('email').value,
+      promo: promoInput,
+      partnerCode: CURRENT_PARTNER,
+      courses: selectedCourses 
+    };
+
+    // 🔴 BẠN NHỚ THAY LINK WEB APP MỚI VÀO ĐÂY SAU KHI DEPLOY GOOGLE SCRIPT 🔴
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzZrynvBQxfNOCciHCg8etNKyh8hqkVQeQbytHdR_kZdOQgidkhtzIvafJhjqf2yeC0/exec";
+
+    fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) })
+    .then(res => res.text())
+    .then(text => {
+      try {
+        const res = JSON.parse(text);
+        if (res.success) {
+          document.getElementById('formSection').style.display = 'none';
+          document.getElementById('qrSection').style.display = 'block';
+          document.getElementById('qrImage').src = res.qrUrl;
+          document.getElementById('qrAmount').innerText = new Intl.NumberFormat('vi-VN').format(res.amount) + ' VNĐ';
+          document.getElementById('qrContent').innerText = res.content;
+        } else {
+          alert("❌ Bị từ chối: " + res.message);
+          btn.innerText = "ĐĂNG KÝ & THANH TOÁN"; btn.disabled = false;
+        }
+      } catch(e) {
+        alert("Lỗi máy chủ Google Script. Vui lòng thử lại!");
+        btn.innerText = "ĐĂNG KÝ & THANH TOÁN"; btn.disabled = false;
+      }
+    })
+    .catch(err => {
+      alert("Mạng không ổn định, vui lòng kiểm tra lại 4G/Wifi!");
+      btn.innerText = "ĐĂNG KÝ & THANH TOÁN"; btn.disabled = false;
+    });
+  }
+</script>
+</body>
+</html>
