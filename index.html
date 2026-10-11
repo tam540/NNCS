@@ -38,13 +38,13 @@
 <div class="container">
   <div id="formSection">
     <div class="header">
-      <h1 class="title">ĐĂNG KÝ KHÓA HỌC CHUYÊN SÂU</h1>
+      <h1 class="title">ĐĂNG KÝ KHÓA HỌC NÔNG NGHIỆP CHUYÊN SÂU</h1>
       <p style="font-size: 13px; color: var(--text-gray); margin: 0;">Điền thông tin để hệ thống tạo mã thanh toán tự động</p>
     </div>
     <form id="regForm" onsubmit="submitForm(event)">
       <div class="form-group"><label>Họ và tên *</label><input type="text" id="name" required placeholder="Ví dụ: Nguyễn Văn A"></div>
       <div class="form-group"><label>Số điện thoại (Có Zalo) *</label><input type="tel" id="phone" required placeholder="Ví dụ: 0912345678"></div>
-      <div class="form-group"><label>Email (Nhận quyền học) *</label><input type="email" id="email" required placeholder="Ví dụ: email@gmail.com"></div>
+      <div class="form-group"><label>Email (Quan trọng-Nhận thông tin và quyền học) *</label><input type="email" id="email" required placeholder="Ví dụ: email@gmail.com"></div>
       
       <div class="form-group">
         <label>Chọn khóa học (Mua từ 2 khóa tự động giảm 30%) *</label>
@@ -59,7 +59,7 @@
 
       <div class="form-group">
         <label>Mã giảm giá (Nếu có)</label>
-        <input type="text" id="promo" placeholder="Ví dụ: V30">
+        <input type="text" id="promo" placeholder="Ví dụ: VIP">
         <div id="promoError" class="error-msg">Mã không chính xác! Gợi ý: Chọn từ 2 khóa học trở lên để hệ thống tự động giảm 30%.</div>
       </div>
       <button type="submit" id="submitBtn">ĐĂNG KÝ & THANH TOÁN</button>
