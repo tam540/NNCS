@@ -23,6 +23,30 @@
   .course-info { flex: 1; font-size: 14px; line-height: 1.5; }
   .course-price { font-weight: bold; color: var(--accent); font-size: 13px; }
 
+  /* Style cho khóa học đã hết hạn tuyển sinh */
+  .course-item.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background-color: #f1f1f1;
+    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+  .course-item.disabled input {
+    cursor: not-allowed;
+  }
+  .badge-closed {
+    display: inline-block;
+    background-color: #d32f2f;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
   button { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 16px; font-size: 15px; font-weight: 700; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
   button:disabled { background-color: #a0b2b0; cursor: not-allowed; }
   
@@ -49,7 +73,14 @@
       <div class="form-group">
         <label>Chọn khóa học (Mua từ 2 khóa tự động giảm 30%) *</label>
         <div class="course-list">
-          <label class="course-item"><input type="checkbox" name="course" value="CHUOI"><div class="course-info">Dịch chuối lên men (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
+          <!-- Khóa Dịch chuối đã đóng cổng tuyển sinh -->
+          <label class="course-item disabled">
+            <input type="checkbox" name="course" value="CHUOI" disabled>
+            <div class="course-info">
+              Dịch chuối lên men (2 buổi) <span class="badge-closed">HẾT HẠN</span><br>
+              <span class="course-price" style="color: #888;">350.000 đ</span>
+            </div>
+          </label>
           <label class="course-item"><input type="checkbox" name="course" value="BVTV"><div class="course-info">Thuốc BVTV sinh học (4 buổi)<br><span class="course-price">700.000 đ</span></div></label>
           <label class="course-item"><input type="checkbox" name="course" value="CA"><div class="course-info">Đạm cá (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
           <label class="course-item"><input type="checkbox" name="course" value="PC"><div class="course-info">Nâng cấp phân chuồng (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
@@ -86,16 +117,23 @@
   function submitForm(event) {
     event.preventDefault();
     
+    // Thu thập danh sách khóa học được chọn, loại trừ input bị disabled
     let selectedCourses = [];
-    document.querySelectorAll('input[name="course"]:checked').forEach(cb => selectedCourses.push(cb.value));
+    document.querySelectorAll('input[name="course"]:checked:not(:disabled)').forEach(cb => selectedCourses.push(cb.value));
+
+    // Phòng chống gian lận bypass bằng F12
+    if (selectedCourses.includes("CHUOI")) {
+      alert("Khóa 'Dịch chuối lên men' đã hết hạn tuyển sinh!");
+      return;
+    }
 
     if (selectedCourses.length === 0) {
-      alert("Vui lòng chọn ít nhất 1 khóa học!"); return;
+      alert("Vui lòng chọn ít nhất 1 khóa học hợp lệ!"); return;
     }
 
     const promoInput = document.getElementById('promo').value.trim().toUpperCase();
     
-    // Validate Frontend: Ép nhập đúng mã V30 hoặc để trống. Sai mã bắt xóa đi.
+    // Validate Frontend: Ép nhập đúng mã V30 hoặc để trống
     if (promoInput !== "" && promoInput !== "V30") {
       document.getElementById('promoError').style.display = 'block';
       document.getElementById('promo').value = ''; 
@@ -116,7 +154,6 @@
       courses: selectedCourses 
     };
 
-    // 🔴 BẠN NHỚ THAY LINK WEB APP MỚI VÀO ĐÂY SAU KHI DEPLOY GOOGLE SCRIPT 🔴
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzZrynvBQxfNOCciHCg8etNKyh8hqkVQeQbytHdR_kZdOQgidkhtzIvafJhjqf2yeC0/exec";
 
     fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) })
