@@ -75,13 +75,19 @@
       <div class="form-group">
         <label>Chọn khóa học (Mua từ 2 khóa tự động giảm 30%) *</label>
         <div class="course-list">
-          <!-- CÁC KHÓA ĐANG MỞ ĐĂNG KÝ -->
-          <label class="course-item"><input type="checkbox" name="course" value="BVTV"><div class="course-info">Thuốc BVTV sinh học (4 buổi)<br><span class="course-price">700.000 đ</span></div></label>
+          <!-- CÁC KHÓA ĐANG MỞ TUYỂN SINH -->
           <label class="course-item"><input type="checkbox" name="course" value="CA"><div class="course-info">Đạm cá (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
           <label class="course-item"><input type="checkbox" name="course" value="PC"><div class="course-info">Nâng cấp phân chuồng (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
           <label class="course-item"><input type="checkbox" name="course" value="2R"><div class="course-info">Tái chế rơm rạ (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
           
-          <!-- KHÓA ĐÃ HẾT HẠN (ĐẨY XUỐNG DÒNG CUỐI CÙNG) -->
+          <!-- CÁC KHÓA ĐÃ HẾT HẠN (ĐƯỢC ĐẨY XUỐNG DƯỚI CÙNG VÀ KHÓA CHỌN) -->
+          <label class="course-item disabled">
+            <input type="checkbox" name="course" value="BVTV" disabled>
+            <div class="course-info">
+              Thuốc BVTV sinh học (4 buổi) <span class="badge-closed">HẾT HẠN</span><br>
+              <span class="course-price" style="color: #888;">700.000 đ</span>
+            </div>
+          </label>
           <label class="course-item disabled">
             <input type="checkbox" name="course" value="CHUOI" disabled>
             <div class="course-info">
@@ -125,14 +131,15 @@
     let selectedCourses = [];
     document.querySelectorAll('input[name="course"]:checked:not(:disabled)').forEach(cb => selectedCourses.push(cb.value));
 
-    // Lớp phòng vệ Frontend: ngăn bypass
-    if (selectedCourses.includes("CHUOI")) {
-      alert("Khóa 'Dịch chuối lên men' đã hết hạn tuyển sinh!");
+    // Lớp phòng vệ Frontend: ngăn bypass qua can thiệp console/DOM
+    if (selectedCourses.includes("CHUOI") || selectedCourses.includes("BVTV")) {
+      alert("Đã có khóa học hết hạn đăng ký trong danh sách chọn. Vui lòng tải lại trang!");
       return;
     }
 
     if (selectedCourses.length === 0) {
-      alert("Vui lòng chọn ít nhất 1 khóa học hợp lệ!"); return;
+      alert("Vui lòng chọn ít nhất 1 khóa học hợp lệ!"); 
+      return;
     }
 
     const promoInput = document.getElementById('promo').value.trim().toUpperCase();
@@ -146,7 +153,8 @@
     }
 
     const btn = document.getElementById('submitBtn');
-    btn.innerText = "ĐANG KẾT NỐI HỆ THỐNG..."; btn.disabled = true;
+    btn.innerText = "ĐANG KẾT NỐI HỆ THỐNG..."; 
+    btn.disabled = true;
 
     const payload = {
       name: document.getElementById('name').value,
@@ -172,16 +180,19 @@
           document.getElementById('qrContent').innerText = res.content;
         } else {
           alert("❌ Bị từ chối: " + res.message);
-          btn.innerText = "ĐĂNG KÝ & THANH TOÁN"; btn.disabled = false;
+          btn.innerText = "ĐĂNG KÝ & THANH TOÁN"; 
+          btn.disabled = false;
         }
       } catch(e) {
         alert("Lỗi máy chủ Google Script. Vui lòng thử lại!");
-        btn.innerText = "ĐĂNG KÝ & THANH TOÁN"; btn.disabled = false;
+        btn.innerText = "ĐĂNG KÝ & THANH TOÁN"; 
+        btn.disabled = false;
       }
     })
     .catch(err => {
       alert("Mạng không ổn định, vui lòng kiểm tra lại 4G/Wifi!");
-      btn.innerText = "ĐĂNG KÝ & THANH TOÁN"; btn.disabled = false;
+      btn.innerText = "ĐĂNG KÝ & THANH TOÁN"; 
+      btn.disabled = false;
     });
   }
 </script>
