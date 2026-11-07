@@ -73,14 +73,20 @@
       <div class="form-group"><label>Email (Quan trọng-Nhận thông tin và quyền học) *</label><input type="email" id="email" required placeholder="Ví dụ: email@gmail.com"></div>
       
       <div class="form-group">
-        <label>Chọn khóa học (Mua từ 2 khóa tự động giảm 30%) *</label>
+        <label>Chọn khóa học (Mua cả 2 khóa còn lại tự động giảm 30%) *</label>
         <div class="course-list">
-          <!-- CÁC KHÓA ĐANG MỞ TUYỂN SINH -->
-          <label class="course-item"><input type="checkbox" name="course" value="CA"><div class="course-info">Đạm cá (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
+          <!-- CÁC KHÓA ĐANG CÒN MỞ TUYỂN SINH -->
           <label class="course-item"><input type="checkbox" name="course" value="PC"><div class="course-info">Nâng cấp phân chuồng (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
           <label class="course-item"><input type="checkbox" name="course" value="2R"><div class="course-info">Tái chế rơm rạ (2 buổi)<br><span class="course-price">350.000 đ</span></div></label>
           
-          <!-- CÁC KHÓA ĐÃ HẾT HẠN (ĐƯỢC ĐẨY XUỐNG DƯỚI CÙNG VÀ KHÓA CHỌN) -->
+          <!-- CÁC KHÓA ĐÃ HẾT HẠN (ĐƯỢC ĐẨY XUỐNG DƯỚI CÙNG VÀ KHÓA TÍCH CHỌN) -->
+          <label class="course-item disabled">
+            <input type="checkbox" name="course" value="CA" disabled>
+            <div class="course-info">
+              Đạm cá (2 buổi) <span class="badge-closed">HẾT HẠN</span><br>
+              <span class="course-price" style="color: #888;">350.000 đ</span>
+            </div>
+          </label>
           <label class="course-item disabled">
             <input type="checkbox" name="course" value="BVTV" disabled>
             <div class="course-info">
@@ -132,7 +138,9 @@
     document.querySelectorAll('input[name="course"]:checked:not(:disabled)').forEach(cb => selectedCourses.push(cb.value));
 
     // Lớp phòng vệ Frontend: ngăn bypass qua can thiệp console/DOM
-    if (selectedCourses.includes("CHUOI") || selectedCourses.includes("BVTV")) {
+    const closedList = ["CHUOI", "BVTV", "CA"];
+    const hasClosed = selectedCourses.some(c => closedList.includes(c));
+    if (hasClosed) {
       alert("Đã có khóa học hết hạn đăng ký trong danh sách chọn. Vui lòng tải lại trang!");
       return;
     }
